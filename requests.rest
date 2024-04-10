@@ -1,0 +1,11 @@
+GET http://localhost:3000/divide?num1=60&num2=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9lbCIsImlhdCI6MTcxMjQyNTE2Nn0.pv2lubD5XaaESD7rI-JQwkFKCHUgr2SVraovonDBiTI
+
+
+###
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username" : "Joel"
+}
