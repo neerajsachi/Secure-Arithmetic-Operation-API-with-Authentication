@@ -1,4 +1,4 @@
-GET http://localhost:3000/add?num1=60&num2=5
+GET http://localhost:3000/add?num1=5um2=0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9lbCIsImlhdCI6MTcxMjc1MjgzMX0.4r3fp2hVImyQMRTOor5W3ifuMxw3Q4xgDKPVS7Z_sqY
 
 
