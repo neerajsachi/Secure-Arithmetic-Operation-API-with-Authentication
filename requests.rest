@@ -1,11 +1,20 @@
-GET http://localhost:3000/add?num1=5um2=0
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9lbCIsImlhdCI6MTcxMjc1MjgzMX0.4r3fp2hVImyQMRTOor5W3ifuMxw3Q4xgDKPVS7Z_sqY
-
+GET http://localhost:3000/add?num1=5&num2=0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9lbCIsImlhdCI6MTcxOTA0MzczOX0.8NXMNiJZTHFgi9UaIckoBe83fXJVSnuCsYXKHEsCAeE
 
 ###
 POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username" : "Joel"
+    "username" : "nrj",
+    "password" : "neeraj"
+}
+
+###
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "username" : "grim",
+    "password" : "plm"
 }

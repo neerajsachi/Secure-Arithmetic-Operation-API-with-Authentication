@@ -3,11 +3,35 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
-// Use CORS middleware
+
 app.use(cors());
 
 app.use(express.json());
+
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+});
+
+const User = mongoose.model('User', userSchema);
+
+app.post('/register', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = new User({ username, password});
+        await user.save();
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (err) {
+        res.status(400).json({ message: 'Error registering user', error: err.message });
+    }
+});
 
 app.get('/add', authenticateToken, (req, res) => {
     const { num1, num2 } = req.query;
@@ -36,13 +60,29 @@ app.get('/divide', authenticateToken, (req, res) => {
     res.json({ result });
 });
 
-app.post('/login', (req, res) => {
-    const username = req.body.username;
-    const user = { name: username };
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
 
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-    res.json({ accessToken: accessToken });
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials - User not found' });
+        }
+
+        if (password !== user.password) {
+            return res.status(401).json({ message: 'Invalid credentials - Password incorrect' });
+        }
+
+        const accessToken = jwt.sign({ name: username }, process.env.ACCESS_TOKEN_SECRET);
+        res.json({ accessToken });
+    } catch (err) {
+        console.error('Error during login:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 });
+
+
+
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
@@ -55,6 +95,7 @@ function authenticateToken(req, res, next) {
         next();
     });
 }
+
 
 console.log("App running");
 app.listen(3000);

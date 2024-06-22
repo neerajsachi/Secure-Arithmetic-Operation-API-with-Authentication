@@ -1,4 +1,4 @@
-// src/store.js
+
 import { createStore } from 'vuex';
 import axios from 'axios';
 
@@ -23,11 +23,13 @@ export default createStore({
   actions: {
     login({ commit }, authData) {
       return axios.post('http://localhost:3000/login', {
-        username: authData.username
+        username: authData.username,
+        password: authData.password
       })
       .then(response => {
         commit('setAccessToken', response.data.accessToken);
         commit('setUsername', authData.username);
+        console.log('AccessToken:', response.data.accessToken);
       });
     },
     logout({ commit }) {

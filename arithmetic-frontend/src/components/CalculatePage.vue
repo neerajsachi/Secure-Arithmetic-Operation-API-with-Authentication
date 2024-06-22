@@ -1,15 +1,17 @@
 <template>
-    <div>
+    <div class="calc-container">
       <h1>Calculate</h1>
       <form @submit.prevent="onCalculate">
         <div>
           <label for="num1">Number 1:</label>
           <input type="number" v-model="num1" id="num1" required />
         </div>
+        <br>
         <div>
           <label for="num2">Number 2:</label>
           <input type="number" v-model="num2" id="num2" required />
         </div>
+        <br>
         <div>
           <label for="operation">Operation:</label>
           <select v-model="operation" id="operation" required>
@@ -19,8 +21,11 @@
             <option value="divide">Divide</option>
           </select>
         </div>
+        <br>
         <button type="submit">Calculate</button>
       </form>
+      <br>
+      <button @click="logout">logout</button>
       <div v-if="result !== null">
         <h2>Result: {{ result }}</h2>
       </div>
@@ -51,12 +56,13 @@
       ...mapActions(['logout']),
       async onCalculate() {
         try {
-          this.errorMessage = ''; // Reset error message
-          this.result = null; // Reset result
+          this.errorMessage = ''; 
+          this.result = null; 
           let response;
           const config = {
-            headers: { Authorization: `Bearer ${this.$store.state.accessToken}` }
-          };
+            headers: { Authorization: `Bearer ${this.$store.state.accessToken}`}
+          }
+          console.log(config)
           switch (this.operation) {
             case 'add':
               response = await axios.get(`http://localhost:3000/add?num1=${this.num1}&num2=${this.num2}`, config);
@@ -84,14 +90,73 @@
           }
           console.error('Failed to calculate', error);
         }
+      },
+      logout(){
+        this.$router.push('/')
       }
     }
   };
   </script>
   
-  <style>
+  <style scoped>
   .error {
     color: red;
+  }
+  
+  .calc-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    border: 2px solid #111010;
+    border-radius: 5px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  input, select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+  }
+  
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    box-sizing: border-box;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  @media (max-width: 576px) {
+    .calc-container {
+      padding: 1rem;
+      border-width: 1px;
+    }
+  
+    input, select {
+      padding: 0.4rem;
+    }
+  
+    button {
+      padding: 0.6rem;
+    }
   }
   </style>
   
